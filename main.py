@@ -252,7 +252,7 @@ try:
 
                 tkinter_input = Entry(root, width=3, bg='white', fg='black')
                 tkinter_input.pack()
-
+                print("hi")
                 
 
                 button = Button(root, text='go',command=change_volume)
@@ -523,7 +523,7 @@ try:
                             lmlist = hand[0]
                             if lmlist:
                                 fingerup = detector.fingersUp(lmlist)
-                                if fingerup == [0, 1, 0, 0, 0] or fingerup == [1, 0, 0, 0, 0] :
+                                if fingerup == [0, 1, 0, 0, 0] or fingerup == [0, 0, 0, 0, 1] :
                                     hi()
                                     q = True
                         fing = cv2.resize(fing, (220, 280))
