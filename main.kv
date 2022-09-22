@@ -7,8 +7,8 @@
         size:root.width,root.height
 
         
-        Image:
-            source: "Photos\\jarivs_app_photo.png"
+        AsyncImage:
+            source: "https://i.imgur.com/MNMCe4p.png"
             size_hint:None,None
             size:800,600
             pos_hint: None,None
@@ -40,8 +40,8 @@
                 on_press: root.Terminate()
 
 
-                Image:
-                    source: "Photos\\jarvis_close.png"
+                AsyncImage:
+                    source: "https://i.imgur.com/jQdD8nh.png"
                     center_x:self.parent.center_x
                     center_y:self.parent.center_y
 
@@ -68,8 +68,8 @@
                 background_color:0,0,0,0
                 on_press:root.Reboot()
 
-                Image:
-                    source:"Photos\\jarvis_reboot.png"
+                AsyncImage:
+                    source:"https://i.imgur.com/S4uGXOu.png"
                     center_x:self.parent.center_x
                     center_y:self.parent.center_y
 

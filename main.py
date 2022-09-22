@@ -62,7 +62,8 @@ try:
 
     Builder.load_file("main.kv")
 
-
+    main_volume = 30
+    music_stopped = False
 
     engine = init()
     voices = engine.getProperty('voices')
@@ -157,16 +158,17 @@ try:
         speak(meaning)
         
 
-    main_volume = 30
+    
 
-    playing = True
     def random_music():
-        
+        from time import sleep
+        from functools import partial   
         from vlc import MediaPlayer
         from tkinter import Tk, Button, Label, BOTTOM, TOP,Entry
         from mutagen.mp3 import MP3
         from random import choice
         from os import listdir
+        
         global musicplayer
         def music_player(song):
             try:
@@ -186,6 +188,7 @@ try:
     
         i = 0
         while True:
+        
             try:
                 i += 1
                 d = choice(files)
@@ -208,7 +211,7 @@ try:
                     global playing
                     playing = False
                     musical.pause()
-                    Timer(1.0,checker).start()
+                    Timer(1,checker).start()
                     root.destroy()
                     quit()
                     
@@ -223,58 +226,90 @@ try:
                 def destroyer():
                     root.destroy()
 
+                def pause_music():
+
+                    musical.set_pause(1)
+                    global music_stopped
+                    music_stopped = True
+                   
+                
+                def play_music(destroy=False):
+                    musical.play()
+                    global music_stopped
+                    music_stopped = False
+                    if destroy:
+                        destroyer()
+
+              
+                if music_stopped is False:
+                    root = Tk()   
+                    root.geometry('600x600')
+                    root.title('Music Player')
+                  
+                    root.config(bg='blue') 
+
+                    get_song_length()
                     
-                root = Tk()    
+                    button = Button(root, text="Next!", command=destroyer, bg='cyan')
+                    button.config(height=50, width=5)
+                    button.pack(side='left')
 
-                get_song_length()
-                
-                
-                root.geometry('600x600')
-                root.title('Music Player')
-                root.iconbitmap("Photos\\jarvis.png")
-                root.config(bg='blue')
+                    button = Button(root, text='Click me to play!', command=play_music, bg='green')
+                    button.config(height=7, width=80)
+                    button.pack(side=BOTTOM)
 
-                button = Button(root, text="Next!", command=destroyer, bg='cyan')
-                button.config(height=50, width=5)
-                button.pack(side='left')
+                    button = Button(root, text='Click me to stop!', command=pause_music, bg='red')
+                    button.config(height=7, width=80)
+                    button.pack(side=TOP)
 
-                button = Button(root, text='Click me to play!', command=lambda: musical.play(), bg='green')
-                button.config(height=7, width=80)
-                button.pack(side=BOTTOM)
+                    button = Button(root, text='Quit', command=quit2, bg='pink' )
+                    button.config(height=100, width=5)
+                    button.pack(side='right')
 
-                button = Button(root, text='Click me to stop!', command=lambda: musical.set_pause(1), bg='red')
-                button.config(height=7, width=80)
-                button.pack(side=TOP)
-
-                button = Button(root, text='quit', command=quit2, bg='pink' )
-                button.config(height=100, width=5)
-                button.pack(side='right')
-
-                tkinter_input = Entry(root, width=3, bg='white', fg='black')
-                tkinter_input.pack()
-                print("hi")
-                
-
-                button = Button(root, text='go',command=change_volume)
-                button.pack()
-
-                
-                label1 = Label(text=f'playing {d}', bg='yellow')
-                label1.config(height=10, width=30)
-                label1.pack()
-                root_sleep = song_length * 1000
-                
+                    tkinter_input = Entry(root, width=3, bg='white', fg='black')
+                    tkinter_input.pack()
             
-                music_player(f"{path}//{d}")
-                root.after(root_sleep,destroyer)
-                root.mainloop()
+                    
+
+                    button = Button(root, text='go',command=change_volume)
+                    button.pack()
+
+                    
+                    label1 = Label(text=f'playing {d}', bg='yellow')
+                    label1.config(height=10, width=30)
+                    label1.pack()
+                    root_sleep = song_length * 1000
+                
+                    music_player(f"{path}//{d}")
+                if music_stopped is False:
+                    root.after(root_sleep,destroyer)
+                    root.mainloop()
+                    
+                    
+                    sleep(0.2)
+                else:
+                    
+                    root = Tk()  
+                    root.geometry('600x600')
+                    root.title('Music Player -Stopped-')
+                   
+                    root.config(bg='red') 
+
+                    button = Button(root, text='Click me to play!', command=partial(play_music,destroy=True), bg='green')
+                    button.config(height=7, width=80)
+                    button.pack(side=BOTTOM)
+
+                    label1 = Label(text='stopped ', bg='yellow')
+                    label1.config(height=30, width=80)
+                    label1.pack()
+                    root.mainloop()
+
                 musical.stop()
                 
-            
-
+                
             except Exception as e:
                 print(e)
-                
+
 
 
     
@@ -503,7 +538,7 @@ try:
 
                     
                     def hi():
-                        print('finger shown')
+                       
                         global fing
                         fing = cv2.imread("fingers\\0.jpg")
                         global gesture
@@ -530,15 +565,15 @@ try:
                         img[50:330, 20:240] = fing
                         cv2.imshow("Video", img)
 
-                        print(f'This is {q}')
+                       
                         if q is True:
-                            print('q is True')
+                         
                             break
                         
                         if cv2.waitKey(1) & 0xFF == ord('q'):
                             break
                         if q is True:
-                            print('q is True')
+                            
                             break
                             
                     video.release()
