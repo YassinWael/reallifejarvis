@@ -2,8 +2,7 @@ try:
     print("hello git")
     from os import startfile
     startfile('internet_connection.py')
-    import cv2
-    from cvzone.HandTrackingModule import HandDetector
+    
 
     try:
         from playsound import playsound
@@ -12,6 +11,9 @@ try:
             t1 = Thread(target=lambda:playsound("sounds\\ready.wav"))
             t1.start()
         from pyttsx3 import init
+        import cv2
+        from cvzone.HandTrackingModule import HandDetector
+        from wikipedia import summary
         from random import choice
         from speech_recognition import Recognizer, Microphone
         from datetime import datetime
@@ -352,6 +354,8 @@ try:
             
             while True: 
                 while not stopped:
+
+                   
                  
                     get_input()
                     global text
@@ -370,9 +374,13 @@ try:
                     if paused is True:
                         stopped = True 
                         speak('stopped')
+
+                    update_status('listening successfully')
                     if len(text)==0:
                         playsound("sounds\\no_input.mp3")
                         i+=1
+                    
+                    
                     
                     elif greeting is True:
                         update_status('greeting')
@@ -467,7 +475,7 @@ try:
                     elif "music" in text:
                         update_status("Playing music")
                         random_music()
-                    elif 'minecraft' in text or 'game' in text:
+                    elif 'minecraft' in text:
                         from os import startfile
                         
                         try:
@@ -527,7 +535,7 @@ try:
                         speak('Time to start coding!')
                     
                     else:
-                        speak("unknown command")
+                        speak(f"According to wikipedia {summary('text',sentences = 2)}.")
                     
                 q = False
                 while stopped is True:
@@ -636,7 +644,7 @@ try:
             self.title = "J.A.R.V.I.S"
             
             
-            Timer(0.8,checker).start()
+            Timer(0.5,checker).start()
             return TestWidget()
             
     if __name__ == "__main__":
