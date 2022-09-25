@@ -526,6 +526,12 @@ try:
                     elif 'messenger' in text:
                         open('https://messenger.com')
                     
+                    elif 'quiz' in text:
+                        open('https://quizizz.com')
+
+                    elif 'exit' in text:
+                        global Terminate
+                        Terminate()
                     
                     
 
@@ -535,7 +541,7 @@ try:
                         speak('Time to start coding!')
                     
                     else:
-                        speak(f"According to wikipedia {summary('text',sentences = 2)}.")
+                        speak('unknown command')
                     
                 q = False
                 while stopped is True:
@@ -566,7 +572,7 @@ try:
                             lmlist = hand[0]
                             if lmlist:
                                 fingerup = detector.fingersUp(lmlist)
-                                if fingerup == [0, 1, 0, 0, 0] or fingerup == [0, 0, 0, 0, 1] :
+                                if fingerup == [0, 1, 0, 0, 0] :
                                     hi()
                                     q = True
                         fing = cv2.resize(fing, (220, 280))
@@ -600,6 +606,7 @@ try:
 
 
     class TestWidget(BoxLayout,Widget):
+        global Terminate
         def Terminate(*args,reboot = False):
             from os import startfile
             if reboot is True:
